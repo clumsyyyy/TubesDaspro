@@ -1,5 +1,8 @@
 import fungsi_user as user
 import fungsi_admin as admin
+import time
+import os
+import hashingtest
 def splitter(string):  # gabole pake split jadi bikin sendiri h3h3
     split_value = [0 for i in range(100)]
     tmp = ''
@@ -16,24 +19,34 @@ def splitter(string):  # gabole pake split jadi bikin sendiri h3h3
         i += 1
     return split_value
 
+def clear():
+    time.sleep(1)
+    os.system('cls')
+def clear_conf():
+    input("Tekan tombol manapun untuk kembali ke menu....")
+    os.system('cls')
+
 def login(): #F01: LOGIN
     user = input("Masukkan username: ")
     pw = input("Masukkan password: ")
+    hashedpw = hashingtest.hashing(pw)
     userFound = False
     isAdmin = False
     with open('user.csv', 'r') as f:
         for line in f:
             csv_arr = splitter(line)
-            if user == csv_arr[2] and pw == csv_arr[3] and csv_arr[5] == "admin\n":
+            if user == csv_arr[2] and hashedpw == csv_arr[3] and csv_arr[5] == "admin\n":
                 userFound = True
                 isAdmin = True
-            elif user == csv_arr[2] and pw == csv_arr[3]:
+            elif user == csv_arr[2] and hashedpw == csv_arr[3]:
                 userFound = True
     if userFound == True and isAdmin == True:
         print("Halo {}! Selamat Datang di Kantong Ajaib.\n\n\n".format(user))
+        clear()
         main_admin()
     elif userFound == True and isAdmin == False:
         print("Halo {}! Selamat Datang di Kantong Ajaib.\n\n\n".format(user))
+        clear()
         main_user()
     else:
         print("Username/password tidak ditemukan! Silahkan masukkan lagi.")
@@ -53,25 +66,28 @@ def register(): #FO2: REGISTER
             if csv_acc[2] == new_user:
                 doesNameExist = True
     if doesNameExist == False:
-        newcsv = str(count) + ";" + new_name + ";" + new_user + ";" + new_pw + ";" + new_alamat + ";user\n"
+        newcsv = str(count) + ";" + new_name + ";" + new_user + ";" + hashingtest.hashing(new_pw) + ";" + new_alamat + ";user\n"
         with open("user.csv", "a") as f:
             f.write(newcsv)
             f.close()
         print("User {} berhasil diregistrasi.".format(new_user))
+        clear()
         loginmenu()
     else:
         print("Username tidak tersedia, mohon ganti username.")
+        clear()
         register()
     
 
 def loginmenu():
     print("Selamat datang di Kantong Ajaib!")
-    print("1. Register")
-    print("2. Login")
-    op = int(input(">>>"))
-    if op == 1:
+    print("Ketik perintah: ")
+    print("1. register")
+    print("2. login")
+    op = input(">>> ")
+    if op == "register":
         register()
-    elif op == 2:
+    elif op == "login":
         login()
     else:
         print("Opsi tidak sesuai")
@@ -80,13 +96,14 @@ def loginmenu():
         
 def main_admin():
     print("\n[ADMIN CONTROL PANEL]\n")
-    print("Ketik erintah: ")
+    print("Ketik perintah: ")
     print("1. carirarity")
     print("2. caritahun")
     print("3. tambahitem")
     print("4. hapusitem")
     print("5. ubahjumlah")
     command = input(">>>")
+    os.system('cls')
     if command == "carirarity":
         admin.cariRarity()
     elif command == "caritahun":
@@ -97,6 +114,7 @@ def main_admin():
         admin.hapusItem()
     elif command == "ubahjumlah":
         admin.ubahJumlah()
+    clear_conf()
     main_admin()
 
 def main_user():
@@ -104,7 +122,7 @@ def main_user():
     print("Ketik perintah: ")
     print("1. carirarity")
     print("2. caritahun")
-    command = input(">>>")
+    command = input(">>> ")
     if command == "carirarity":
         user.cariRarity()
     elif command == "caritahun":
