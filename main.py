@@ -1,5 +1,3 @@
-import fungsi_user as user
-import fungsi_admin as admin
 import time
 import os
 import hashingtest
@@ -80,7 +78,7 @@ def register(): #FO2: REGISTER
             f.close()
         print("User {} berhasil diregistrasi.".format(new_user))
         clear()
-        loginmenu()
+        main_admin()
     else:
         print("Username tidak tersedia, mohon ganti username.")
         clear()
@@ -89,30 +87,22 @@ def register(): #FO2: REGISTER
 
 def loginmenu():
     print("Selamat datang di Kantong Ajaib!")
-    print("Ketik perintah: ")
-    print("1. register")
-    print("2. login")
-    op = input(">>> ")
-    if op == "register":
-        register()
-    elif op == "login":
-        login()
-    else:
-        print("Opsi tidak sesuai")
-        loginmenu()
+    login()
 
         
 def main_admin():
     print("\n[ADMIN CONTROL PANEL]\n")
     print("Ketik perintah: ")
-    print("1. carirarity")
-    print("2. caritahun")
-    print("3. tambahitem")
-    print("4. hapusitem")
-    print("5. ubahjumlah")
-    print("6. save")
+    print("carirarity")
+    print("caritahun")
+    print("tambahitem")
+    print("hapusitem")
+    print("ubahjumlah")
+    print("save")
     command = input(">>> ")
     os.system('cls')
+    if command == "register":
+        register()
     if command == "carirarity":
         cariRarity()
     elif command == "caritahun":
@@ -160,7 +150,8 @@ def load():
             data_borrow_consumables = [splitter(line.replace('\n', ''), ';') for line in f.readlines()]
         with open(args.folder + "\\gadget_return_history.csv", "r") as f:
             data_return_gadget = [splitter(line.replace('\n', ''), ';') for line in f.readlines()]
-        print("data berhasil di load")
+        print("Data berhasil di load!")
+        clear()
     else:
         print("Folder load tidak ditemukan")
         data_user = [['id', 'username', 'nama', 'alamat', 'password', 'role']]
@@ -169,7 +160,6 @@ def load():
         data_borrow_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah']]
         data_borrow_consumables = [['id', 'id_pengambil', 'id_consumable', 'tanggal_peminjaman']]
         data_return_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah']]
-
 def save():
     global data_user, data_gadget, data_consumables, data_borrow_gadget, data_borrow_consumables, data_return_gadget
     folder = input("Masukkan nama folder penyimpanan: ")
@@ -280,7 +270,7 @@ def hapusItem():#F06: Hapus Item
     item_index = 0
     i = -1
     if verifyItem(id_input) == True:
-        for line in data_gadget:
+        for line in file:
             csv_arr = line
             i += 1
             if id_input == csv_arr[0]:
@@ -293,7 +283,9 @@ def hapusItem():#F06: Hapus Item
             print("Penghapusan dibatalkan.")
     else:
         print("Tidak ada item dengan ID tersebut.")
-def ubahJumlah():#F06: Hapus Item
+
+
+def ubahJumlah():#F07: Ubah Jumlah
     id_input = input("Masukkan ID: ")
     if verifyItem(id_input) == True:
         quant = int(input("Masukkan jumlah: "))
@@ -313,6 +305,7 @@ def ubahJumlah():#F06: Hapus Item
                     print("{} {} gagal dibuang karena stok kurang. Stok sekarang: {} (<{})".format(abs(quant), line[1], line[3], abs(quant)))
     else:
         print("Tidak ada item dengan ID {}".format(id_input))
-        
+
+
 load()
 loginmenu()
