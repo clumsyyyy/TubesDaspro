@@ -2,7 +2,7 @@ import time
 import os
 import hashingtest
 import argparse
-
+import datetime
 parser = argparse.ArgumentParser(description = "testing argparse")
 parser.add_argument('folder', type = str, help = 'Lokasi penyimpanan', default = '')
 args = parser.parse_args()
@@ -26,10 +26,12 @@ def splitter(string, token):  # gabole pake split jadi bikin sendiri h3h3
 def clear():
     time.sleep(1)
     os.system('cls')
+    
 def clear_conf():
     input("Tekan tombol manapun untuk kembali ke menu....")
     os.system('cls')
 user_ID = ""
+
 def login(): #F01: LOGIN
     global user_ID
     user = input("Masukkan username: ")
@@ -65,17 +67,12 @@ def register(): #FO2: REGISTER
     new_alamat = input("Masukkan alamat: ")
     doesNameExist = False
     count = 0
-    with open("user.csv", "r") as f:
-        for line in f:
-            count += 1
-            csv_acc = splitter(line, ";")
-            if csv_acc[2] == new_user:
-                doesNameExist = True
+    for line in data_user:
+        count += 1
+        if line[2] == new_user:
+            doesNameExist = True
     if doesNameExist == False:
-        newcsv = str(count) + ";" + new_name + ";" + new_user + ";" + hashingtest.hashing(new_pw) + ";" + new_alamat + ";user\n"
-        with open("user.csv", "a") as f:
-            f.write(newcsv)
-            f.close()
+        data_user.append([str(count), new_name, new_user, hashingtest.hashing(new_pw), new_alamat, "user"])
         print("User {} berhasil diregistrasi.".format(new_user))
         clear()
         main_admin()
@@ -99,6 +96,10 @@ def main_admin():
     print("hapusitem")
     print("ubahjumlah")
     print("save")
+    print("exit")
+    print("register")
+    print("riwayatpinjam")
+    print("riwayatambil")
     command = input(">>> ")
     os.system('cls')
     if command == "register":
@@ -115,23 +116,44 @@ def main_admin():
         ubahJumlah()
     elif command == "save":
         save()
+    elif command == "exit":
+        exit()
+    elif command == "riwayatpinjam":
+        riwayatpinjam()
+    elif command == "riwayatkembali":
+        riwayatkembali()
+    elif command == "riwayatambil":
+        riwayatambil()
     clear_conf()
     main_admin()
 
 def main_user():
     global user_ID
     print("[CONTROL PANEL]\n")
+    print("user id: {}".format(user_ID))
     print("Ketik perintah: ")
     print("1. carirarity")
     print("2. caritahun")
     print("3. pinjam")
+    print("4. minta")
+    print("5. save")
+    print("6. kembalikan")
+    print("7. exit")
     command = input(">>> ")
     if command == "carirarity":
         cariRarity()
     elif command == "caritahun":
         cariTahun()
     elif command == "save":
-        save
+        save()
+    elif command == "pinjam":
+        pinjam(user_ID)
+    elif command == "minta":
+        minta(user_ID)
+    elif command == "kembalikan":
+        kembalikan(user_ID)
+    elif command == "exit":
+        exit()
     main_user()
 
 
@@ -160,31 +182,54 @@ def load():
         data_borrow_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah']]
         data_borrow_consumables = [['id', 'id_pengambil', 'id_consumable', 'tanggal_peminjaman']]
         data_return_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah']]
+
 def save():
     global data_user, data_gadget, data_consumables, data_borrow_gadget, data_borrow_consumables, data_return_gadget
     folder = input("Masukkan nama folder penyimpanan: ")
     if not os.path.exists(folder):
-        inp = input(print("Directory {} tidak ada, buat directory? ".format(folder)))
+        inp = input("Directory {} tidak ada, buat directory? ".format(folder))
         if inp == "Y" or inp == "y":
             os.makedirs(folder)
+            args.folder = folder
         else:
             print("Save dibatalkan")
             return
     print()
     print("Saving....")
-    with open(args.folder + "\\user.csv", "w") as f:
-        f.write('\n'.join([';'.join([str(a) for a in x]) for x in [line for line in data_user]]))
-    with open(args.folder + "\\gadget.csv", "w") as f:
-        f.write('\n'.join([';'.join([str(a) for a in x]) for x in [line for line in data_gadget]]))
-    with open(args.folder + "\\consumables.csv", "w") as f:
-        f.write('\n'.join([';'.join([str(a) for a in x]) for x in [line for line in data_consumables]]))
-    with open(args.folder + "\\gadget_borrow_history.csv", "w") as f:
-        f.write('\n'.join([';'.join([str(a) for a in x]) for x in [line for line in data_borrow_gadget]]))
-    with open(args.folder + "\\consumable_history.csv", "w") as f:
-        f.write('\n'.join([';'.join([str(a) for a in x]) for x in [line for line in data_borrow_consumables]]))
-    with open(args.folder + "\\gadget_return_history.csv", "w") as f:
-        f.write('\n'.join([';'.join([str(a) for a in x]) for x in [line for line in data_return_gadget]]))
-    print("data berhasil di load")
+    with open(args.folder + "\\user.csv", "w+") as f:
+        for line in data_user:
+            for x in [line]:
+                data = ";".join([str(a) for a in x])
+                f.write(data)
+                f.write("\n")
+        #f.write('\n'.join([';'.join([str(a) for a in x]) for x in [line for line in data_user]]))
+    with open(args.folder + "\\gadget.csv", "w+") as f:
+        for line in data_gadget:
+            for x in [line]:
+                data = ";".join([str(a) for a in x])
+                f.write(data + "\n")
+    with open(args.folder + "\\consumables.csv", "w+") as f:
+        for line in data_consumables:
+            for x in [line]:
+                data = ";".join([str(a) for a in x])
+                f.write(data + "\n")
+    with open(args.folder + "\\gadget_borrow_history.csv", "w+") as f:
+        for line in data_borrow_gadget:
+            for x in [line]:
+                data = ";".join([str(a) for a in x])
+                f.write(data + "\n")
+    with open(args.folder + "\\consumable_history.csv", "w+") as f:
+        for line in data_borrow_consumables:
+            for x in [line]:
+                data = ";".join([str(a) for a in x])
+                f.write(data + "\n")
+    with open(args.folder + "\\gadget_return_history.csv", "w+") as f:
+        for line in data_return_gadget:
+            for x in [line]:
+                data = ";".join([str(a) for a in x])
+                f.write(data + "\n")
+    print("Data berhasil disimpan.")
+    clear()
 
 def verifyItem(ID):  # fungsi buat F05 buat verif
     isExisting = False
@@ -198,10 +243,7 @@ def verifyItem(ID):  # fungsi buat F05 buat verif
         ref_id = csv_arr[0]
         if ref_id == ID:
             isExisting = True
-    if isExisting == True:
-        return True #WELCOME TO MONKE CODING
-    else:
-        return False 
+    return isExisting
 
 def printItem_Check(item_arr):
     print("Nama:", item_arr[1])
@@ -307,5 +349,156 @@ def ubahJumlah():#F07: Ubah Jumlah
         print("Tidak ada item dengan ID {}".format(id_input))
 
 
+    
+def pinjam(user_ID): #F08 sama F10 ga jauh beda
+    borrowed_id = input("Masukkan ID item: ")
+    date = input("Tanggal peminjaman: ")
+    quant = int(input("Jumlah peminjaman: "))
+    borrow_file_length = 0
+    for line in data_borrow_gadget:
+        borrow_file_length += 1
+    if verifyItem(borrowed_id) == True:
+        for line in data_gadget:
+            if borrowed_id == line[0]:
+                if int(line[3]) > quant:
+                    line[3] = str(int(line[3]) - quant)
+                    print("Item {} (x{}) berhasil dipinjam!".format(line[1], quant))
+                    data_borrow_gadget.append([str(borrow_file_length), user_ID, borrowed_id, date, str(quant)])
+    else:
+        print("Tidak ada item dengan ID tersebut!")
+
+def minta(user_ID):
+    borrowed_id = input("Masukkan ID item: ")
+    date = input("Tanggal peminjaman: ")
+    quant = int(input("Jumlah peminjaman: "))
+    borrow_file_length = 0
+    for line in data_borrow_consumables:
+        borrow_file_length += 1
+    if verifyItem(borrowed_id) == True:
+        for line in data_consumables:
+            if borrowed_id == line[0]:
+                if int(line[3]) > quant:
+                    line[3] = str(int(line[3]) - quant)
+                    print("Item {} (x{}) berhasil diambil!".format(line[1], quant))
+                    data_borrow_consumables.append([str(borrow_file_length), user_ID, borrowed_id, date, str(quant)])
+    else:
+        print("Tidak ada item dengan ID tersebut!")
+
+def findName(id):
+    name = ""
+    for line in data_gadget:
+        if id == line[0]:
+            name = line[1]
+    return name
+def findConsum(id):
+    name = ""
+    for line in data_consumables:
+        if id == line[0]:
+            name = line[1]
+    return name
+
+
+personal_array = []
+
+def kembalikan(user_ID):
+    print("\n")
+    global personal_array
+    i = 0
+    for line in data_borrow_gadget[1:]:
+        if str(user_ID) == str(line[1]):
+            i += 1
+            line[0] = i
+            personal_array.append(line)
+    print(personal_array)
+    for line in personal_array:
+        print(str(line[0]) + ".", end = "")
+        print(findName(line[2]))
+    ref_id = int(input("Masukkan nomor peminjaman: "))
+    date = input("Tanggal pengembalian: ")
+    id_item = ""
+    #belum buat validasi date
+    #if date valid:
+    for line in personal_array:
+        if ref_id == int(line[0]): #jika sesuai, berarti
+             #tambahin data baru di data ngebalikin
+             #return value, pake algoritma ubahJumlah ig
+            quant = int(line[4])
+            id_item = line[2]
+            print(id_item)
+    for line in data_gadget[1:]:
+        if line[0] == id_item:
+            line[3] = str(int(line[3]) + quant)
+            print(line[3])
+    len_data = 1
+    for line in data_return_gadget[1:]:
+        len_data += 1
+    data_return_gadget.append([str(len_data), user_ID, id_item, date])
+    print(data_return_gadget)
+
+        
+def findUser(id):
+    name = ""
+    for line in data_user:
+        if id == line[0]:
+            name = line[1]
+    return name
+
+def riwayatpinjam():
+    i = 0
+    a = data_borrow_gadget[::-1]
+    length = len(data_borrow_gadget) - 1
+    for line in a[:length]:
+        i += 1
+        print("ID Peminjaman:", line[0] )
+        print("Nama pengambil: ", end = "")
+        print(findUser(line[1]))
+        print("Nama gadget: ", end = "")
+        print(findName(line[2]))
+        print("Tanggal peminjaman:", line[3])
+        print("Jumlah:", line[4])
+        print("\n")
+        if i % 5 == 0:
+            inp = input("Tampilkan lebih banyak? (y/n)")
+            if inp == "N" or inp == "n":
+                main_admin()
+
+
+def riwayatkembali():
+    a = data_return_gadget[::-1]
+    i = 0
+    length = len(data_return_gadget) - 1
+    for line in a[:length]:
+        i += 1
+        print("ID Pengembalian: ", line[0])
+        print("Nama pengambil: ", end = "")
+        print(findUser(line[1]))
+        print("Nama gadget: ", end = "")
+        print(findName(line[2]))
+        print("Tanggal peminjaman:", line[3])
+        print("\n")
+        if i % 5 == 0:
+            inp = input("Tampilkan lebih banyak? (y/n)")
+            if inp == "N" or inp == "n":
+                main_admin()
+
+
+def riwayatambil():
+    i = 0
+    a = data_borrow_consumables[::-1]
+    length = len(data_borrow_consumables) - 1
+    for line in a[:length]:
+        i += 1
+        print("ID Peminjaman:", line[0] )
+        print("Nama pengambil: ", end = "")
+        print(findUser(line[1]))
+        print("Nama consumable: ", end = "")
+        print(findConsum(line[2]))
+        print("Tanggal pengambilan:", line[3])
+        print("Jumlah:", line[4])
+        print("\n")
+        if i % 5 == 0:
+            inp = input("Tampilkan lebih banyak? (y/n)")
+            if inp == "N" or inp == "n":
+                main_admin()
 load()
 loginmenu()
