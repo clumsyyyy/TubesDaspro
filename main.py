@@ -34,7 +34,6 @@ def load():
         data_borrow_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah']]
         data_borrow_consumables = [['id', 'id_pengambil', 'id_consumable', 'tanggal_peminjaman']]
         data_return_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah']]
-
 def save():
     global data_user, data_gadget, data_consumables, data_borrow_gadget, data_borrow_consumables, data_return_gadget
     folder = input("Masukkan nama folder penyimpanan: ")
@@ -81,22 +80,18 @@ def save():
                 data = ";".join([str(a) for a in x])
                 f.write(data + "\n")
     print("Data berhasil disimpan.")
-    clear()
 
 def splitter(string, token):  # gabole pake split jadi bikin sendiri h3h3
-    split_value = [0 for i in range(6)] #a/b/c;d;e;f;g => splitter("a;b;c;d;e;f;g", "/") [a,b,c,d,e,f,g]
+    split_value = [] #a/b/c;d;e;f;g => splitter("a;b;c;d;e;f;g", "/") [a,b,c,d,e,f,g]
     tmp = ''
-    i = 0
     for word in string:
         if word == token:
-            split_value[i] = tmp
-            i += 1
+            split_value.append(tmp)
             tmp = ''
         else:
             tmp += word
     if tmp:
-        split_value[i] = tmp
-        i += 1
+        split_value.append(tmp)
     return split_value
 
 def clear():
@@ -104,7 +99,7 @@ def clear():
     os.system('cls')
     
 def clear_conf():
-    input("Tekan tombol manapun untuk kembali ke menu....")
+    input("[Tekan tombol manapun untuk kembali ke menu]")
     os.system('cls')
 user_ID = ""
 
@@ -161,21 +156,21 @@ def register(): #FO2: REGISTER
 def loginmenu():
     print("Selamat datang di Kantong Ajaib!")
     login()
-
         
 def main_admin():
     print("\n[ADMIN CONTROL PANEL]\n")
     print("Ketik perintah: ")
-    print("carirarity")
-    print("caritahun")
-    print("tambahitem")
-    print("hapusitem")
-    print("ubahjumlah")
-    print("save")
-    print("exit")
-    print("register")
-    print("riwayatpinjam")
-    print("riwayatambil")
+    print("[1] carirarity")
+    print("[2] caritahun")
+    print("[3] tambahitem")
+    print("[4] hapusitem")
+    print("[5] ubahjumlah")
+    print("[6] register")
+    print("[7] riwayatpinjam")
+    print("[8] riwayatkembali")
+    print("[9] riwayatambil")
+    print("[10] save")
+    print("[0] exit")
     command = input(">>> ")
     os.system('cls')
     if command == "register":
@@ -193,6 +188,7 @@ def main_admin():
     elif command == "save":
         save()
     elif command == "exit":
+        save()
         exit()
     elif command == "riwayatpinjam":
         riwayatpinjam()
@@ -205,17 +201,18 @@ def main_admin():
 
 def main_user():
     global user_ID
-    print("[CONTROL PANEL]\n")
-    print("user id: {}".format(user_ID))
+    print("[Main Menu]\n")
+    print("user id: {}\n".format(user_ID))
     print("Ketik perintah: ")
-    print("1. carirarity")
-    print("2. caritahun")
-    print("3. pinjam")
-    print("4. minta")
-    print("5. save")
-    print("6. kembalikan")
-    print("7. exit")
+    print("[1] carirarity")
+    print("[2] caritahun")
+    print("[3] pinjam")
+    print("[4] kembalikan")
+    print("[5] minta")
+    print("[6] save")
+    print("[7] exit")
     command = input(">>> ")
+    os.system('cls')
     if command == "carirarity":
         user.cariRarity(data_gadget)
     elif command == "caritahun":
@@ -229,6 +226,7 @@ def main_user():
     elif command == "kembalikan":
         user.kembalikan(user_ID, data_gadget, data_borrow_gadget, data_return_gadget)
     elif command == "exit":
+        save()
         exit()
     main_user()
 

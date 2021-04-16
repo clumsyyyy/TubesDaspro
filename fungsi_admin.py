@@ -18,20 +18,26 @@ def tambahItem(arr1, arr2): #F05: MENAMBAH ITEM
         new_desc = input("Masukkan Deskripsi: ")
         new_jumlah = input("Masukkan Jumlah: ")
         new_rarity = input("Masukkan Rarity: ")
+        while new_rarity != "C" and new_rarity != "B" and new_rarity != "A" and new_rarity != "S":
+            print("Rarity tidak valid!")
+            new_rarity = input("Masukkan Rarity: ")
         if new_rarity == "C" or new_rarity == "B" or new_rarity == "A" or new_rarity == "S":
             if id_input[0] == "G":
                 new_tahun = input("Masukkan Tahun Ditemukan: ")
                 arr1.append([id_input, new_name, new_desc, new_jumlah, new_rarity, new_tahun])
                 print("Item telah berhasil ditambahkan ke database\n")
             elif id_input[0] == "C":
-                arr2.data_consumables.append([id_input, new_name, new_desc, new_jumlah, new_rarity])
+                arr2.append([id_input, new_name, new_desc, new_jumlah, new_rarity])
                 print("Item telah berhasil ditambahkan ke database.\n")
-        else:
-            print("Input Rarity tidak valid!\n")
     elif (id_input[0] == "G" or id_input[0] == "C") and verifyItem(id_input, arr1, arr2) == True:
         print("Gagal menambahkan item karena ID sudah ada.\n")
+        tambahItem(arr1, arr2)
+    elif (id_input == ""):
+        print("Input kosong!")
+        tambahItem(arr1, arr2)
     else:
         print("Gagal menambahkan item karena ID tidak valid.\n")
+        tambahItem(arr1, arr2)
 
 def hapusItem(arr1, arr2):#F06: Hapus Item
     id_input = input("Masukkan ID: ")
