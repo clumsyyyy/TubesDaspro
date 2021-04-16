@@ -1,12 +1,3 @@
 id;nama;username;password;alamat;role
-1;newo;owen;304267212;kekw;admin
-2;owen;newo2;560745080;jambi;user
-3;owen;oewn;874587667;jambi;user
-4;andre;Andre;931426214;andre;user
-5;adelia;adeliaaaa;594175810;taman yasmin;user
-6;andre;andre;357302630;rumah andre;user
-7;owen;owen3;560745080;jambi;user
-8;owen;owenlagi;48564409;owen;user
-9;owen5;owen5;457167840;owen5;user
-10;owen;owen6;138633992;owen;user
-11;rei;rei;1597232;rei;user
+1;Owen Christian Wijaya;newo;801050873;Jambi;admin
+2;Owen Christian Wijaya;owenU;138633992;Jambi;user

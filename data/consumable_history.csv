@@ -1,2 +1,1 @@
-id;nama;deskripsi;jumlah;rarity;0
-1;7;C2;04/13/2021;13;0
+id;id_peminjam;id_gadget;tanggal_peminjaman;jumlah
