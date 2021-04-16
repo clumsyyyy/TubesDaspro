@@ -156,9 +156,18 @@ def register(): #FO2: REGISTER
 def loginmenu():
     print("Selamat datang di Kantong Ajaib!")
     login()
-        
+
+def findUName(id, arr):
+    name = ""
+    for line in arr:
+        if id == line[0]:
+            name = line[2]
+    return name
+
 def main_admin():
+    global user_ID
     print("\n[ADMIN CONTROL PANEL]\n")
+    print("Log-in sebagai: {}\n\n".format(findUName(user_ID, data_user)))
     print("Ketik perintah: ")
     print("[1] carirarity")
     print("[2] caritahun")
@@ -202,7 +211,7 @@ def main_admin():
 def main_user():
     global user_ID
     print("[Main Menu]\n")
-    print("user id: {}\n".format(user_ID))
+    print("Log-in sebagai: {}\n\n".format(findUName(user_ID, data_user)))
     print("Ketik perintah: ")
     print("[1] carirarity")
     print("[2] caritahun")
@@ -228,6 +237,7 @@ def main_user():
     elif command == "exit":
         save()
         exit()
+    clear_conf()
     main_user()
 
 

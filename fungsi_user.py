@@ -83,7 +83,6 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
             i += 1
             line[0] = i
             personal_array.append(line)
-    print(personal_array)
     for line in personal_array:
         print(str(line[0]) + ".", end = "")
         print(findName(line[2], ref_array))
@@ -105,6 +104,8 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
     for line in return_array[1:]:
         len_data += 1
     return_array.append([str(len_data), user_ID, id_item, date])
+    print("\n")
+    print("Item {} (x{}) telah dikembalikan.".format(findName(id_item, ref_array), quant))
 
 def minta(user_ID, borrow_array, ref_array):
     borrowed_id = input("Masukkan ID item: ")
