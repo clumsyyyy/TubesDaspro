@@ -54,7 +54,7 @@ def pinjam(user_ID, borrow_array, ref_array): #F08 sama F10 ga jauh beda
     
     
     if verifyItem(borrowed_id, ref_array) == True and isBorrowed == False:
-        date = input("Tanggal peminjaman: ")
+        date = input("Tanggal peminjaman (DD/MM/YYYY): ")
         quant = int(input("Jumlah peminjaman: "))
         
         for line in ref_array:
@@ -81,7 +81,7 @@ def findName(id, arr):
 
 personal_array = []
 def kembalikan(user_ID, ref_array, borrow_array, return_array):
-    print("\n")
+
     global personal_array
     personal_array = []
     i = 0
@@ -91,13 +91,11 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
     for line in borrow_array[1:]:
         isReturned = False
         if str(user_ID) == str(line[1]):
-            for return_line in return_array[1:]:
-                if int(line[0]) == int(return_line[0]):
-                    if int(line[4]) == int(return_line[4]):
-                        isReturned = True
-            if isReturned == False:
-                i += 1
-                personal_array.append([i, line[1], line[2], line[3], line[4]])
+            if int(line[5]) == 1:
+                isReturned = True
+        if isReturned == False:
+            i += 1
+            personal_array.append([i, line[1], line[2], line[3], line[4], line[0]])
     #verifikasi apakah sesuai username
     if i != 0:
         for line in personal_array:
@@ -105,7 +103,7 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
             print(findName(line[2], ref_array), end = "")
             print(" (x{})".format(line[4]))
         ref_id = int(input("Masukkan nomor peminjaman: "))
-        date = input("Tanggal pengembalian: ")
+        date = input("Tanggal pengembalian (DD/MM/YYYY): ")
         id_item = ""
         #belum buat validasi date (jadinya ga perlu)
         #if date valid:
@@ -115,6 +113,7 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
                 #return value, pake algoritma ubahJumlah ig
                 quant = int(line[4])
                 id_item = line[2]
+                borrow_id = line[5]
 
 
         for line in ref_array[1:]:
@@ -124,7 +123,11 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
         len_data = 1
         for line in return_array[1:]:
             len_data += 1
-        return_array.append([str(len_data), user_ID, id_item, date, quant])
+        return_array.append([str(len_data), borrow_id, date])
+
+        for line in borrow_array[1:]:
+            if int(borrow_id) == int(line[0]):
+                line[5] = "1"
         print("\n")
         print("Item {} (x{}) telah dikembalikan.".format(findName(id_item, ref_array), quant))
     else:
@@ -132,7 +135,7 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
 
 def minta(user_ID, borrow_array, ref_array):
     borrowed_id = input("Masukkan ID item: ")
-    date = input("Tanggal peminjaman: ")
+    date = input("Tanggal peminjaman (DD/MM/YYYY): ")
     quant = int(input("Jumlah peminjaman: "))
     borrow_file_length = 0
     for line in borrow_array:

@@ -31,9 +31,9 @@ def load():
         data_user = [['id', 'username', 'nama', 'alamat', 'password', 'role']]
         data_gadget = [['id', 'nama', 'deskripsi', 'jumlah', 'rarity', 'tahun_ditemukan']]
         data_consumables = [['id', 'nama', 'deskripsi', 'jumlah', 'rarity']]
-        data_borrow_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah']]
-        data_borrow_consumables = [['id', 'id_pengambil', 'id_consumable', 'tanggal_peminjaman']]
-        data_return_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah']]
+        data_borrow_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah', 'is_returned']]
+        data_borrow_consumables = [['id', 'id_pengambil', 'id_consumable', 'tanggal_pengambilan', 'jumlah']]
+        data_return_gadget = [['id', 'id_peminjaman', 'tanggal_pengembalian',]]
 def save():
     global data_user, data_gadget, data_consumables, data_borrow_gadget, data_borrow_consumables, data_return_gadget
     folder = input("Masukkan nama folder penyimpanan: ")
@@ -151,11 +151,38 @@ def register(): #FO2: REGISTER
         print("Username tidak tersedia, mohon ganti username.")
         clear()
         register()
-    
+def asciiart():
+    print("_______________________________________________________________")
+    print("|  _________________________________________________________  |")
+    print("| | _  __         _                     _    _      _ _     | |")
+    print("| || |/ /__ _ _ _| |_ ___ _ _  __ _    /_\  (_)__ _(_) |__  | |")
+    print("| || ' </ _` | ' \  _/ _ \ ' \/ _` |  / _ \ | / _` | | '_ | | |")
+    print("| ||_|\_\__,_|_||_\__\___/_||_\__, | /_/ \_\/ \__,_|_|_.__/ | |")
+    print("| |                           |___/       |__/              | |")
+    print("| |_________________________________________________________| |")
+    print("|_____________________________________________________________|")
+    print("\nSelamat datang di Kantong Ajaib!")
+    print("================================")
+
 
 def loginmenu():
-    print("Selamat datang di Kantong Ajaib!")
-    login()
+    print("\nKetik perintah: ")
+    print("[1] login")
+    print("[2] help")
+    print("[3] exit")
+    command = input(">>> ")
+    if command == "login":
+        login()
+    elif command == "help":
+        admin.helpAdmin()
+        loginmenu()
+    elif command == "exit":
+        print("Terima kasih telah menggunakan Kantong Ajaib!")
+        time.sleep(3)
+        exit()
+    else:
+        print("Perintah tidak dikenali! Mohon meng-input sesuai pilihan.")
+        loginmenu()
 
 def findUName(id, arr):
     name = ""
@@ -165,6 +192,7 @@ def findUName(id, arr):
     return name
 
 def main_admin():
+    asciiart()
     global user_ID
     print("\n[ADMIN CONTROL PANEL]\n")
     print("Log-in sebagai: {}\n\n".format(findUName(user_ID, data_user)))
@@ -211,6 +239,7 @@ def main_admin():
     main_admin()
 
 def main_user():
+    asciiart()
     global user_ID
     print("[Main Menu]\n")
     print("Log-in sebagai: {}\n\n".format(findUName(user_ID, data_user)))
@@ -251,6 +280,7 @@ def findName(id):
         if id == line[0]:
             name = line[1]
     return name
+
 def findConsum(id):
     name = ""
     for line in data_consumables:
@@ -290,14 +320,19 @@ def riwayatkembali():
     a = data_return_gadget[::-1]
     i = 0
     length = len(data_return_gadget) - 1
+    
     for line in a[:length]:
+        borrowed_item_id = ""
+        for borrow_line in data_borrow_gadget[1:]:
+            if int(line[1]) == int(borrow_line[0]):
+                borrowed_item_id = borrow_line[2]
         i += 1
         print("ID Pengembalian: ", line[0])
         print("Nama pengambil: ", end = "")
         print(findUser(line[1]))
         print("Nama gadget: ", end = "")
-        print(findName(line[2]))
-        print("Tanggal peminjaman:", line[3])
+        print(findName(borrowed_item_id))
+        print("Tanggal peminjaman:", line[2])
         print("\n")
         if i % 5 == 0:
             inp = input("Tampilkan lebih banyak? (y/n)")
@@ -324,4 +359,5 @@ def riwayatambil():
             if inp == "N" or inp == "n":
                 main_admin()
 load()
+asciiart()
 loginmenu()
