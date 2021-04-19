@@ -1,16 +1,17 @@
 id;nama;deskripsi;jumlah;rarity;tahun_ditemukan
-G1;Time Machine;Mesin Waktu Doremonangis;3;S;2099
-G2;Bamboo Propeller;Digunakan untuk transportasi jarak jauh;123;S;2099
+G1;Time Machine;Mesin Waktu Doremonangis;8;S;2099
+G2;Bamboo Propeller;Digunakan untuk transportasi jarak jauh;129;S;2099
 G3;PowerBalance Band;menjaga keseimbangan dan menambah kekuatan;102;A;2011
-G4;Dakimakura Rias Gremory;Meningkatkan nafsu makan!;9;B;2009
+G4;Dakimakura Rias Gremory;Meningkatkan nafsu makan!;8;B;2009
 G5;Monte Carlo;So pointy and edgy;29;S;2012
 G6;Wish-Ender;"Your time has come, now go home" - wallhacks;6;S;2019
-G7;Witherhoard;COVID-induced grenade launcher;7;A;2000
+G7;Witherhoard;COVID-induced grenade launcher;6;A;2000
 G8;SUROS Regime;gun go brbrbrbRBBRBRBRBRBRBBR;17;A;2017
-G9;Hawkmoon;Honking high-accurate hand cannon;6;A;2009
+G9;Hawkmoon;Honking high-accurate hand cannon;8;A;2009
 G10;The Last Word;Yee-haw inducing hand cannon;15;B;2019
 G11;Crimson;3-tap hand cannon;13;C;2002
 G12;MIDA Multi-Tool;Scout rifle with an extra punch to it;200;C;2013
 G13;Rat King;Pistol with a stacking of stats over fellow users;15;B;2014
 G14;Izanagi's Burden;"Izanagi died single, maybe you don't want to" - izangus;1;S;2020
 G15;Sunshot;Fire explosive-containing rounds.;4;S;2019
+G20;The Aerial Monke;monke go brr;30;S;2021
