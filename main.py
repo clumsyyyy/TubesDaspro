@@ -182,6 +182,8 @@ def main_admin():
     print("[0] exit")
     command = input(">>> ")
     os.system('cls')
+    print("Opsi: {}".format(command))
+    print("\n")
     if command == "register":
         register()
     if command == "carirarity":
@@ -222,6 +224,8 @@ def main_user():
     print("[7] exit")
     command = input(">>> ")
     os.system('cls')
+    print("Opsi: {}".format(command))
+    print("\n")
     if command == "carirarity":
         user.cariRarity(data_gadget)
     elif command == "caritahun":
