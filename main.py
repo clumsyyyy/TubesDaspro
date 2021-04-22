@@ -9,33 +9,49 @@ parser = argparse.ArgumentParser(description = "testing argparse")
 parser.add_argument('folder', type = str, help = 'Lokasi penyimpanan', default = '')
 args = parser.parse_args()
 
+data_user = []
+data_gadget = []
+data_consumables = []
+data_borrow_gadget = []
+data_request_consumables = []
+data_return_gadget = []
+
 def load():
-    global data_user, data_gadget, data_consumables, data_borrow_gadget, data_borrow_consumables, data_return_gadget
+    global data_user, data_gadget, data_consumables, data_borrow_gadget, data_request_consumables, data_return_gadget
     if os.path.exists(args.folder):
-        with open(args.folder + "\\user.csv", "r") as f: #string = asu\n => string = asu
-            data_user = [splitter(line.replace('\n', ''), ';') for line in f.readlines()] #.split()
+        with open(args.folder + "\\user.csv", "r") as f: 
+            for line in f.readlines():
+                data_user.append(splitter(line.replace('\n', ''), ';'))
+            #data_user = [splitter(line.replace('\n', ''), ';') for line in f.readlines()] #.split()
         with open(args.folder + "\\gadget.csv", "r") as f:
-            data_gadget = [splitter(line.replace('\n', ''), ';') for line in f.readlines()]
+            for line in f.readlines():
+                data_gadget.append(splitter(line.replace('\n', ''), ';'))
         with open(args.folder + "\\consumables.csv", "r") as f:
-            data_consumables = [splitter(line.replace('\n', ''), ';') for line in f.readlines()]
+            for line in f.readlines():
+                data_consumables.append(splitter(line.replace('\n', ''), ';'))
         with open(args.folder + "\\gadget_borrow_history.csv", "r") as f:
-            data_borrow_gadget = [splitter(line.replace('\n', ''), ';') for line in f.readlines()]
+            for line in f.readlines():
+                data_borrow_gadget.append(splitter(line.replace('\n', ''), ';'))
         with open(args.folder + "\\consumable_history.csv", "r") as f:
-            data_borrow_consumables = [splitter(line.replace('\n', ''), ';') for line in f.readlines()]
+            for line in f.readlines():
+                data_request_consumables.append(splitter(line.replace('\n', ''), ';'))
         with open(args.folder + "\\gadget_return_history.csv", "r") as f:
-            data_return_gadget = [splitter(line.replace('\n', ''), ';') for line in f.readlines()]
+            for line in f.readlines():
+                data_return_gadget.append(splitter(line.replace('\n', ''), ';'))
         print("Data berhasil di load!")
-        clear()
+
     else:
-        print("Folder load tidak ditemukan")
-        data_user = [['id', 'username', 'nama', 'alamat', 'password', 'role']]
+        print("Folder load tidak ditemukan. Membuat direktori sementara....")
+        print("Login menggunakan username 'admin' dan password 'admin'")
+        data_user = [['id', 'nama', 'username', 'password', 'alamat' 'role'], ['1', 'user', 'admin', '801050873', 'admin', 'admin']]
         data_gadget = [['id', 'nama', 'deskripsi', 'jumlah', 'rarity', 'tahun_ditemukan']]
         data_consumables = [['id', 'nama', 'deskripsi', 'jumlah', 'rarity']]
         data_borrow_gadget = [['id', 'id_peminjam', 'id_gadget', 'tanggal_peminjaman', 'jumlah', 'is_returned']]
-        data_borrow_consumables = [['id', 'id_pengambil', 'id_consumable', 'tanggal_pengambilan', 'jumlah']]
+        data_request_consumables = [['id', 'id_pengambil', 'id_consumable', 'tanggal_pengambilan', 'jumlah']]
         data_return_gadget = [['id', 'id_peminjaman', 'tanggal_pengembalian',]]
+        print(data_user)
 def save():
-    global data_user, data_gadget, data_consumables, data_borrow_gadget, data_borrow_consumables, data_return_gadget
+    global data_user, data_gadget, data_consumables, data_borrow_gadget, data_request_consumables, data_return_gadget
     folder = input("Masukkan nama folder penyimpanan: ")
     if not os.path.exists(folder):
         inp = input("Directory {} tidak ada, buat directory? ".format(folder))
@@ -70,7 +86,7 @@ def save():
                 data = ";".join([str(a) for a in x])
                 f.write(data + "\n")
     with open(args.folder + "\\consumable_history.csv", "w+") as f:
-        for line in data_borrow_consumables:
+        for line in data_request_consumables:
             for x in [line]:
                 data = ";".join([str(a) for a in x])
                 f.write(data + "\n")
@@ -179,6 +195,7 @@ def loginmenu():
     elif command == "exit":
         print("Terima kasih telah menggunakan Kantong Ajaib!")
         time.sleep(3)
+        clear()
         exit()
     else:
         print("Perintah tidak dikenali! Mohon meng-input sesuai pilihan.")
@@ -264,7 +281,7 @@ def main_user():
     elif command == "pinjam":
         user.pinjam(user_ID, data_borrow_gadget, data_gadget)
     elif command == "minta":
-        user.minta(user_ID, data_borrow_consumables, data_consumables)
+        user.minta(user_ID, data_request_consumables, data_consumables)
     elif command == "kembalikan":
         user.kembalikan(user_ID, data_gadget, data_borrow_gadget, data_return_gadget)
     elif command == "exit":
@@ -342,8 +359,8 @@ def riwayatkembali():
 
 def riwayatambil():
     i = 0
-    a = data_borrow_consumables[::-1]
-    length = len(data_borrow_consumables) - 1
+    a = data_request_consumables[::-1]
+    length = len(data_request_consumables) - 1
     for line in a[:length]:
         i += 1
         print("ID Peminjaman:", line[0] )
