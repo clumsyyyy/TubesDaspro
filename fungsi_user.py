@@ -49,7 +49,7 @@ def pinjam(user_ID, borrow_array, ref_array): #F08 sama F10 ga jauh beda
     borrow_file_length = 0
     for line in borrow_array:
         borrow_file_length += 1
-        if borrowed_id == line[2] and user_ID == line[1]:
+        if borrowed_id == line[2] and user_ID == line[1] and int(line[5]) == 0:
             isBorrowed = True
     
     
@@ -62,7 +62,7 @@ def pinjam(user_ID, borrow_array, ref_array): #F08 sama F10 ga jauh beda
                 if int(line[3]) > quant:
                     line[3] = str(int(line[3]) - quant)
                     print("Item {} (x{}) berhasil dipinjam!".format(line[1], quant))
-                    borrow_array.append([str(borrow_file_length), user_ID, borrowed_id, date, str(quant)])
+                    borrow_array.append([str(borrow_file_length), user_ID, borrowed_id, date, str(quant), "0"])
                 else:
                     print("Mohon maaf, jumlah peminjaman melebihi jumlah gadget yang ada!")
     elif verifyItem(borrowed_id, ref_array) == True and isBorrowed == True:
@@ -90,20 +90,33 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
     #cek pake boolean isReturned, kalo isReturned == False berarti baru di-append
     for line in borrow_array[1:]:
         isReturned = False
+        isPartial = False
         if str(user_ID) == str(line[1]):
             if int(line[5]) == 1:
                 isReturned = True
-        if isReturned == False:
+            elif int(line[5]) == 0:
+                for return_line in return_array[1:]:
+                    if int(return_line[3]) < int(line[4]) and line[0] == return_line[1]:
+                        selisih = int(line[4]) - int(return_line[3]) 
+                        isPartial = True
+
+        if isPartial == True:
             i += 1
-            personal_array.append([i, line[1], line[2], line[3], line[4], line[0]])
+            personal_array.append([i, line[0], line[1], line[2], line[3], selisih])
+
+        elif isReturned == False:
+            i += 1
+            personal_array.append([i, line[0], line[1], line[2], line[3], line[4]])
+        
     #verifikasi apakah sesuai username
     if i != 0:
         for line in personal_array:
             print(str(line[0]) + ".", end = "")
-            print(findName(line[2], ref_array), end = "")
-            print(" (x{})".format(line[4]))
+            print(findName(line[3], ref_array), end = "")
+            print(" (x{})".format(line[5]))
         ref_id = int(input("Masukkan nomor peminjaman: "))
         date = input("Tanggal pengembalian (DD/MM/YYYY): ")
+        jumlah_pengembalian = int(input("Masukkan jumlah pengembalian: "))
         id_item = ""
         #belum buat validasi date (jadinya ga perlu)
         #if date valid:
@@ -111,25 +124,44 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
             if ref_id == int(line[0]): #jika sesuai, berarti
                 #tambahin data baru di data ngebalikin
                 #return value, pake algoritma ubahJumlah ig
-                quant = int(line[4])
-                id_item = line[2]
-                borrow_id = line[5]
+                quant = int(line[5])
+                id_item = line[3]
+                borrow_id = line[1]
 
+        if quant == jumlah_pengembalian:
+            for line in ref_array[1:]:
+                if line[0] == id_item:
+                    line[3] = str(int(line[3]) + quant)
 
-        for line in ref_array[1:]:
-            if line[0] == id_item:
-                line[3] = str(int(line[3]) + quant)
+            len_data = 1
+            for line in return_array[1:]:
+                len_data += 1
+            return_array.append([str(len_data), borrow_id, date, quant])
 
-        len_data = 1
-        for line in return_array[1:]:
-            len_data += 1
-        return_array.append([str(len_data), borrow_id, date])
+            for line in borrow_array[1:]:
+                if int(borrow_id) == int(line[0]):
+                    line[5] = "1"
 
-        for line in borrow_array[1:]:
-            if int(borrow_id) == int(line[0]):
-                line[5] = "1"
-        print("\n")
-        print("Item {} (x{}) telah dikembalikan.".format(findName(id_item, ref_array), quant))
+            print("\n")
+            print("Item {} (x{}) telah dikembalikan.".format(findName(id_item, ref_array), quant))
+
+        elif quant > jumlah_pengembalian:
+            quant -= jumlah_pengembalian
+            for line in ref_array[1:]:
+                if line[0] == id_item:
+                    line[3] = str(int(line[3]) + jumlah_pengembalian)
+
+            len_data = 1
+
+            for line in return_array[1:]:
+                len_data += 1
+            return_array.append([str(len_data), borrow_id, date, jumlah_pengembalian])
+
+            print("\n")
+            print("Item {} (x{}) telah dikembalikan. Sisa item: {}".format(findName(id_item, ref_array), jumlah_pengembalian, quant))
+        elif quant < jumlah_pengembalian:
+            print("Mohon maaf, tapi jumlah item yang dikembalikan lebih banyak dari yang dipinjam!")
+
     else:
         print("Mohon maaf, semua item nampaknya sudah dikembalikan atau Anda belum meminjam item!")
 
