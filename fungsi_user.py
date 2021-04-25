@@ -81,7 +81,7 @@ def findName(id, arr):
 
 personal_array = []
 def kembalikan(user_ID, ref_array, borrow_array, return_array):
-
+    
     global personal_array
     personal_array = []
     i = 0
@@ -100,13 +100,13 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
                         selisih = int(line[4]) - int(return_line[3]) 
                         isPartial = True
 
-        if isPartial == True:
-            i += 1
-            personal_array.append([i, line[0], line[1], line[2], line[3], selisih])
+            if isPartial == True:
+                i += 1
+                personal_array.append([i, line[0], line[1], line[2], line[3], selisih])
 
-        elif isReturned == False:
-            i += 1
-            personal_array.append([i, line[0], line[1], line[2], line[3], line[4]])
+            elif isReturned == False:
+                i += 1
+                personal_array.append([i, line[0], line[1], line[2], line[3], line[4]])
         
     #verifikasi apakah sesuai username
     if i != 0:

@@ -343,16 +343,17 @@ def riwayatkembali():
         for borrow_line in data_borrow_gadget[1:]:
             if int(line[1]) == int(borrow_line[0]):
                 borrowed_item_id = borrow_line[2]
+                name_id = borrow_line[1]
         i += 1
-        print("ID Pengembalian: ", line[0])
+        print("ID Pengembalian:", line[0])
         print("Nama pengambil: ", end = "")
-        print(findUser(line[1]))
+        print(findUser(name_id))
         print("Nama gadget: ", end = "")
         print(findName(borrowed_item_id))
         print("Tanggal peminjaman:", line[2])
         print("\n")
         if i % 5 == 0:
-            inp = input("Tampilkan lebih banyak? (y/n)")
+            inp = input("Tampilkan lebih banyak? (y/n) >>> ")
             if inp == "N" or inp == "n":
                 main_admin()
 
