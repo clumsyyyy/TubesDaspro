@@ -167,6 +167,7 @@ def register(): #FO2: REGISTER
         print("Username tidak tersedia, mohon ganti username.")
         clear()
         register()
+        
 def asciiart():
     print("_______________________________________________________________")
     print("|  _________________________________________________________  |")
@@ -197,9 +198,13 @@ def loginmenu():
         time.sleep(3)
         clear()
         exit()
+
     else:
         print("Perintah tidak dikenali! Mohon meng-input sesuai pilihan.")
         loginmenu()
+
+
+
 
 def findUName(id, arr):
     name = ""
@@ -313,11 +318,23 @@ def findUser(id):
             name = line[1]
     return name
 
+def sortDate(arr, pos):
+    for i in range(1, len(arr)):
+        for j in range(1, len(arr) - i - 1):
+            date1 = splitter(arr[j][pos], "/")
+            date2 = splitter(arr[j + 1][pos], "/")
+
+            if datetime.datetime(int(date1[2]), int(date1[1]), int(date1[0])) < datetime.datetime(int(date2[2]), int(date2[1]), int(date2[0])):
+                temp = arr[j]
+                arr[j] = arr[j + 1]
+                arr[j + 1] = temp
+    return(arr)
+
 def riwayatpinjam():
     i = 0
-    a = data_borrow_gadget[::-1]
-    length = len(data_borrow_gadget) - 1
-    for line in a[:length]:
+    a = sortDate(data_borrow_gadget, 3)
+
+    for line in a[1:]:
         i += 1
         print("ID Peminjaman:", line[0] )
         print("Nama pengambil: ", end = "")
@@ -333,12 +350,12 @@ def riwayatpinjam():
                 main_admin()
 
 
+
 def riwayatkembali():
-    a = data_return_gadget[::-1]
+
     i = 0
-    length = len(data_return_gadget) - 1
-    
-    for line in a[:length]:
+    a = sortDate(data_return_gadget, 2)
+    for line in a[1:]:
         borrowed_item_id = ""
         for borrow_line in data_borrow_gadget[1:]:
             if int(line[1]) == int(borrow_line[0]):
@@ -360,11 +377,10 @@ def riwayatkembali():
 
 def riwayatambil():
     i = 0
-    a = data_request_consumables[::-1]
-    length = len(data_request_consumables) - 1
-    for line in a[:length]:
+    a = sortDate(data_request_consumables, 3)
+    for line in a[1:]:
         i += 1
-        print("ID Peminjaman:", line[0] )
+        print("ID Pengambilan:", line[0] )
         print("Nama pengambil: ", end = "")
         print(findUser(line[1]))
         print("Nama consumable: ", end = "")
@@ -378,4 +394,5 @@ def riwayatambil():
                 main_admin()
 load()
 asciiart()
+
 loginmenu()

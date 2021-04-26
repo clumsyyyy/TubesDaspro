@@ -9,3 +9,5 @@ def hashing(input):
         pangkat += 1
     hashed = str(int(val % m))
     return hashed
+
+

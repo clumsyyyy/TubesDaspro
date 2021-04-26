@@ -59,10 +59,12 @@ def pinjam(user_ID, borrow_array, ref_array): #F08 sama F10 ga jauh beda
         
         for line in ref_array:
             if borrowed_id == line[0]:
-                if int(line[3]) > quant:
+                if int(line[3]) >= quant:
                     line[3] = str(int(line[3]) - quant)
                     print("Item {} (x{}) berhasil dipinjam!".format(line[1], quant))
                     borrow_array.append([str(borrow_file_length), user_ID, borrowed_id, date, str(quant), "0"])
+                elif int(line[3]) == 0:
+                    print("Mohon maaf, barang sedang habis!")
                 else:
                     print("Mohon maaf, jumlah peminjaman melebihi jumlah gadget yang ada!")
     elif verifyItem(borrowed_id, ref_array) == True and isBorrowed == True:
@@ -175,9 +177,14 @@ def minta(user_ID, borrow_array, ref_array):
     if verifyItem(borrowed_id, ref_array) == True:
         for line in ref_array:
             if borrowed_id == line[0]:
-                if int(line[3]) > quant:
+                if int(line[3]) >= quant:
                     line[3] = str(int(line[3]) - quant)
                     print("Item {} (x{}) berhasil diambil!".format(line[1], quant))
                     borrow_array.append([str(borrow_file_length), user_ID, borrowed_id, date, str(quant)])
+                elif int(line[3]) == 0:
+                    print("Mohon maaf, barang sedang habis!")
+                else:
+                    print("Mohon maaf, jumlah peminjaman melebihi jumlah gadget yang ada!")
+
     else:
         print("Tidak ada item dengan ID tersebut!")

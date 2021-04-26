@@ -19,7 +19,7 @@ def tambahItem(arr1, arr2): #F05: MENAMBAH ITEM
         new_jumlah = input("Masukkan Jumlah: ")
         new_rarity = input("Masukkan Rarity: ")
         while new_rarity != "C" and new_rarity != "B" and new_rarity != "A" and new_rarity != "S":
-            print("Rarity tidak valid!")
+            print("Input rarity tidak valid!")
             new_rarity = input("Masukkan Rarity: ")
         if new_rarity == "C" or new_rarity == "B" or new_rarity == "A" or new_rarity == "S":
             if id_input[0] == "G":
