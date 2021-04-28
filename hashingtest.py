@@ -10,4 +10,3 @@ def hashing(input):
     hashed = str(int(val % m))
     return hashed
 
-

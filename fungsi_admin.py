@@ -57,6 +57,7 @@ def hapusItem(arr1, arr2):#F06: Hapus Item
         confirm = input("Apakah anda yakin ingin menghapus {} (Y/N)? ".format(itemname))
         if confirm == "Y":
             ref_arr.pop(item_index)
+            print("Item berhasil dihapus.")
         elif confirm == "N":
             print("Penghapusan dibatalkan.")
     else:

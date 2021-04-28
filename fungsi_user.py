@@ -14,6 +14,7 @@ def printItem_Check(item_arr):
     print("Tahun Ditemukan:", item_arr[5])
     print("\n")
 
+
 def cariRarity(arr): #F03: Pencarian Gadget Berdasarkan Rarity
     rarity = input("Masukkan rarity: ")
     print("\n")
@@ -43,6 +44,8 @@ def cariTahun(arr): #F04: Pencarian Gadget Berdasarkan Tahun Ditemukan
         elif category == "<" and item_year < year:
             printItem_Check(csv_arr)
 
+
+            
 def pinjam(user_ID, borrow_array, ref_array): #F08 sama F10 ga jauh beda
     borrowed_id = input("Masukkan ID item: ")
     isBorrowed = False
@@ -52,11 +55,10 @@ def pinjam(user_ID, borrow_array, ref_array): #F08 sama F10 ga jauh beda
         if borrowed_id == line[2] and user_ID == line[1] and int(line[5]) == 0:
             isBorrowed = True
     
-    
     if verifyItem(borrowed_id, ref_array) == True and isBorrowed == False:
-        date = input("Tanggal peminjaman (DD/MM/YYYY): ")
+        date = input("Tanggal peminjaman (DD/MM/YYYY): ") #anggap selalu valid
         quant = int(input("Jumlah peminjaman: "))
-        
+
         for line in ref_array:
             if borrowed_id == line[0]:
                 if int(line[3]) >= quant:
@@ -83,9 +85,8 @@ def findName(id, arr):
 
 personal_array = []
 def kembalikan(user_ID, ref_array, borrow_array, return_array):
-    
     global personal_array
-    personal_array = []
+    personal_array = [] #iuser id == 2, maka yang masuk cuman data peminjaman a.n. id nomor 2 (yang belum fully returned)
     i = 0
     #logikanya, baru diappend apabila data tidak ada di dalam data_return_gadget
     #setelah verifikasi dari user ID
@@ -169,8 +170,8 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
 
 def minta(user_ID, borrow_array, ref_array):
     borrowed_id = input("Masukkan ID item: ")
-    date = input("Tanggal peminjaman (DD/MM/YYYY): ")
-    quant = int(input("Jumlah peminjaman: "))
+    date = input("Tanggal permintaan (DD/MM/YYYY): ")
+    quant = int(input("Jumlah permintaan: "))
     borrow_file_length = 0
     for line in borrow_array:
         borrow_file_length += 1
