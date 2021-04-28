@@ -1,12 +1,11 @@
 id;nama;deskripsi;jumlah;rarity
 C1;Traveler's Chosen;Consume to amplify your energy!;7;S
-C2;Hard Light;Light in solid form.;20;B
-C3;Fighting Lion;Summon a cub. Yeah, a cub.;50;C
-C4;Eriana's Vow;Cast one lethal piercing bullet;5;S
+C2;Hard Light;Light in solid form.;18;B
+C3;Fighting Lion;Summon a cub. Yeah, a cub.;49;C
+C4;Eriana's Vow;Cast one lethal piercing bullet;4;S
 C5;Symmetry;Change your firing mode to a slower, more damaging shots for 10 seconds.;20;B
 C6;Borealis;Cast a blinding aura for 5 seconds. Enemies will be shortsighted in a 20m radius range;3;S
-C7;Cloudstrike;Precision headshots cast a lightning, dealing area damage;15;A
+C7;Cloudstrike;Precision headshots cast a lightning, dealing area damage;0;A
 C8;Riskrunner;Supercharges your movement but also increases your hitbox by 5%;25;C
 C9;Arc Soul;Create a tiny lightning ball as a personal assistant;20;B
-C10;Polaris Lance;Throwable weapons will cast an icy field ;23;B
-C11;Graviton Lance;Throwable item will cast mini black-holes that pulls enemies towards it;15;A
+C11;Graviton Lance;Throwable item will cast mini black-holes that pulls enemies towards it;14;A
