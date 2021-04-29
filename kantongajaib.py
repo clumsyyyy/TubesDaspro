@@ -22,7 +22,7 @@ def load():
     if os.path.exists(args.folder):
         with open(args.folder + "\\user.csv", "r") as f: 
             for line in f.readlines():
-                data_user.append(splitter(line.replace('\n', ''), ';'))
+                data_user.append(splitter(line.replace('\n', ''), ';')) #"tubes;daspro" -> ["tubes", "daspro"]
         with open(args.folder + "\\gadget.csv", "r") as f:
             for line in f.readlines():
                 data_gadget.append(splitter(line.replace('\n', ''), ';'))
@@ -193,7 +193,7 @@ def findUser(id):
 
 def sortDate(arr, pos):
     for i in range(1, len(arr)):
-        for j in range(1, len(arr) - i - 1):
+        for j in range(1, len(arr) - i):
             date1 = splitter(arr[j][pos], "/")
             date2 = splitter(arr[j + 1][pos], "/")
 
@@ -205,6 +205,7 @@ def sortDate(arr, pos):
 
 
 def riwayatpinjam():
+    global data_borrow_gadget
     i = 0
     a = sortDate(data_borrow_gadget, 3)
 
@@ -224,9 +225,13 @@ def riwayatpinjam():
                 clear()
                 main_admin()
 
+    user.sortID(data_borrow_gadget)
+    data_borrow_gadget = user.sortID(data_borrow_gadget)
+
 
 
 def riwayatkembali():
+    global data_return_gadget
     i = 0
     a = sortDate(data_return_gadget, 2)
     for line in a[1:]:
@@ -248,9 +253,10 @@ def riwayatkembali():
             if inp == "N" or inp == "n":
                 clear()
                 main_admin()
-
+    data_return_gadget = user.sortID(data_return_gadget)
 
 def riwayatambil():
+    global data_request_consumables
     i = 0
     a = sortDate(data_request_consumables, 3)
     for line in a[1:]:
@@ -268,7 +274,8 @@ def riwayatambil():
             if inp == "N" or inp == "n":
                 clear()
                 main_admin()
-        
+    data_request_consumables = user.sortID(data_request_consumables)
+
 def asciiart():
     print("_______________________________________________________________")
     print("|  _________________________________________________________  |")

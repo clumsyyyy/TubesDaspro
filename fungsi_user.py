@@ -15,6 +15,17 @@ def printItem_Check(item_arr):
     print("\n")
 
 
+
+def sortID(arr):
+    for i in range(1, len(arr)):
+        for j in range(1, len(arr) - i):
+            if int(arr[j][0]) > int(arr[j + 1][0]):
+                temp = arr[j]
+                arr[j] = arr[j + 1]
+                arr[j + 1] = temp
+    return(arr)
+
+
 def cariRarity(arr): #F03: Pencarian Gadget Berdasarkan Rarity
     rarity = input("Masukkan rarity: ")
     print("\n")
@@ -65,6 +76,7 @@ def pinjam(user_ID, borrow_array, ref_array): #F08 sama F10 ga jauh beda
                     line[3] = str(int(line[3]) - quant)
                     print("Item {} (x{}) berhasil dipinjam!".format(line[1], quant))
                     borrow_array.append([str(borrow_file_length), user_ID, borrowed_id, date, str(quant), "0"])
+                    sortID(borrow_array)
                 elif int(line[3]) == 0:
                     print("Mohon maaf, barang sedang habis!")
                 else:
@@ -140,7 +152,7 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
             for line in return_array[1:]:
                 len_data += 1
             return_array.append([str(len_data), borrow_id, date, quant])
-
+            sortID(return_array)
             for line in borrow_array[1:]:
                 if int(borrow_id) == int(line[0]):
                     line[5] = "1"
@@ -159,6 +171,7 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array):
             for line in return_array[1:]:
                 len_data += 1
             return_array.append([str(len_data), borrow_id, date, jumlah_pengembalian])
+            sortID(return_array)
 
             print("\n")
             print("Item {} (x{}) telah dikembalikan. Sisa item: {}".format(findName(id_item, ref_array), jumlah_pengembalian, quant))
@@ -182,6 +195,7 @@ def minta(user_ID, borrow_array, ref_array):
                     line[3] = str(int(line[3]) - quant)
                     print("Item {} (x{}) berhasil diambil!".format(line[1], quant))
                     borrow_array.append([str(borrow_file_length), user_ID, borrowed_id, date, str(quant)])
+                    sortID(borrow_array)
                 elif int(line[3]) == 0:
                     print("Mohon maaf, barang sedang habis!")
                 else:
