@@ -1,6 +1,6 @@
 import time
 import os
-import hashingtest
+import hash
 import argparse
 import datetime
 import fungsi_user as user
@@ -146,7 +146,7 @@ def login(): #F01: LOGIN
     user = input("Masukkan username: ")
     pw = input("Masukkan password: ")
 
-    hashedpw = hashingtest.hashing(pw) #hashedpw adalah hasil hashing dari password yang diinput yang akan dicocokkan di user.csv
+    hashedpw = hash.hashing(pw) #hashedpw adalah hasil hashing dari password yang diinput yang akan dicocokkan di user.csv
     userFound = False #boolean flag untuk mengetahui keberadaan akun
     isAdmin = False #boolean flag untuk mengetahui apakah akun admin atau bukan
 
@@ -190,7 +190,7 @@ def register(): #FO2: REGISTER
         if line[2] == new_user:
             doesNameExist = True
     if doesNameExist == False: #jika tidak ada username yang baru, entry baru akan ditambahkan ke dalam user.csv dengan tipe akun user
-        data_user.append([str(count), new_name, new_user, hashingtest.hashing(new_pw), new_alamat, "user"])
+        data_user.append([str(count), new_name, new_user, hash.hashing(new_pw), new_alamat, "user"])
         print("User {} berhasil diregistrasi.".format(new_user))
         clear()
         main_admin()
