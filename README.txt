@@ -24,7 +24,7 @@ fungsi_user.py berisi fungsi-fungsi user, seperti
 --fungsi mengambil consumables (F10)
 --fungsi-fungsi pembantu lainnya
 
-hashing.py berisi pengerjaan bonus berupa hashing dengan algoritma polynomial hashing (FB01)
+hashfunc.py berisi pengerjaan bonus berupa hashing dengan algoritma polynomial hashing (FB01)
 
 folder data berisi 6 file yang dapat dijadikan referensi (user.csv, gadget.csv, consumables.csv, gadget_borrow_history.csv, gadget_return_history.csv, consumables_history.csv)
 
