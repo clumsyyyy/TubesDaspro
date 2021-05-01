@@ -120,26 +120,28 @@ def kembalikan(user_ID, ref_array, borrow_array, return_array): #F09 + FB02: Pen
         isPartial = False
         
         if str(user_ID) == str(line[1]):
-            if int(line[5]) == 1:
-                isReturned = True #jika boolean flag = "1", tidak perlu menambahkan peminjaman di personal_array
-            if int(line[5]) == 0:
-                selisih = 0
-                for return_line in return_array[1:]:
-                    if int(return_line[3]) < int(line[4]) and line[0] == return_line[1]: 
-                        if selisih == 0:#program mengecek apakah pengembalian yang dilakukan parsial atau tidak
-                            selisih = int(line[4]) - int(return_line[3]) 
-                        else:
-                            selisih -= int(return_line[3]) #dengan mencocokkan ID yang ada dan menghitung selisih yang perlu dikembalikan
-                        isPartial = True   
+            if verifyItem(line[2], ref_array) == True:
+                if int(line[5]) == 1:
+                    isReturned = True #jika boolean flag = "1", tidak perlu menambahkan peminjaman di personal_array
+                if int(line[5]) == 0:
+                    selisih = 0
+                    for return_line in return_array[1:]:
+                        if int(return_line[3]) < int(line[4]) and line[0] == return_line[1]: 
+                            if selisih == 0:#program mengecek apakah pengembalian yang dilakukan parsial atau tidak
+                                selisih = int(line[4]) - int(return_line[3]) 
+                            else:
+                                selisih -= int(return_line[3]) #dengan mencocokkan ID yang ada dan menghitung selisih yang perlu dikembalikan
+                            isPartial = True   
 
-            if isPartial == True: #jika pengembalian parsial, maka tambahkan entry di personal_array dengan jumlah yang perlu dikembalikan = selisih
-                i += 1
-                personal_array.append([i, line[0], line[1], line[2], line[3], selisih])
+                if isPartial == True: #jika pengembalian parsial, maka tambahkan entry di personal_array dengan jumlah yang perlu dikembalikan = selisih
+                    i += 1
+                    personal_array.append([i, line[0], line[1], line[2], line[3], selisih])
 
-            elif isReturned == False: #jika belum dikembalikan sama sekali, maka tambahkan entry di personal_array sesuai dengan borrow_array
-                i += 1
-                personal_array.append([i, line[0], line[1], line[2], line[3], line[4]])
-
+                elif isReturned == False: #jika belum dikembalikan sama sekali, maka tambahkan entry di personal_array sesuai dengan borrow_array
+                    i += 1
+                    personal_array.append([i, line[0], line[1], line[2], line[3], line[4]])
+            else:
+                print("Item {} tidak ada karena dihapus oleh admin.".format(line[2]))
 
     if i != 0: #jika personal_array tidak kosong
         for line in personal_array:
